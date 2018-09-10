@@ -19,7 +19,7 @@ std::vector<std::string> wrap_members(const char* str) {
             memName += *it;
         }
     }
-    member_names.push_back(memName + '\0');
+    member_names.push_back(memName);
     return member_names;
 }
 /** ------------------------------------------------------------------------------------------- */

@@ -10,12 +10,12 @@ namespace metafunction
 {
 /** ------------------------------------------------------------------------------- */
 template <typename T>
-constexpr size_t members_count(const T* obj) {
+inline size_t members_count(const T* obj) {
     return detail::subelements_count_obj<T>::get_value(obj);
 }
 
 template <typename T>
-std::string to_json_string(const T& obj) {
+inline std::string to_json_string(const T& obj) {
     return detail::json_converter<T>::to_json_string(obj);
 }
 
