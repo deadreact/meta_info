@@ -1,5 +1,6 @@
 #include "member_name.hpp"
-
+#include "metaconfig.hpp"
+#include <jsoncpp/json.h>
 
 namespace metafunction {
 namespace detail {
@@ -24,4 +25,12 @@ std::vector<std::string> wrap_members(const char* str) {
 }
 /** ------------------------------------------------------------------------------------------- */
 } //namespace detail
+
 } //namespace metafunction
+
+Json::Value jsonFromString(const std::string& str) {
+    Json::Value jsonVal;
+    Json::Reader reader;
+    return reader.parse(str, jsonVal) ? jsonVal : Json::nullValue;
+}
+
