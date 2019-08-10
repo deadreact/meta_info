@@ -9,7 +9,6 @@
 #include <list>
 #include <array>
 #include <limits>
-
 namespace metafunction {
 namespace detail {
 /** ------------------------------------------------------------------------------ */
@@ -348,7 +347,7 @@ struct json_converter<uint8_t> {
     static std::string to_json_string(uint8_t arg)
     {
         std::ostringstream ss;
-        ss << uint(arg);
+        ss << uint32_t(arg);
         return ss.str();
     }
     static bool from_json(const Json::Value& jsonValue, uint8_t& arg) {

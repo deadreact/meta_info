@@ -7,6 +7,7 @@
 
 #include "member_name.hpp"
 #include "member_offset.hpp"
+#include <algorithm>
 
 namespace metafunction {
 namespace detail {

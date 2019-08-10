@@ -122,6 +122,7 @@ namespace detail {
 /** ------------------------------------------------------------------------------------------- */
 CONSTEXPR static const char* mem_name_chars_all = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 CONSTEXPR static const char* mem_name_chars_nom = "_abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+CONSTEXPR static const char* mem_name_symbols   = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 std::vector<std::string> wrap_members(const char* str);
 
 template <size_t N>
@@ -134,7 +135,7 @@ std::array<ns42::string_view, N> wrap_to_array(const char* str)
 #if defined(CUT_m_FROM_NAMES) && CUT_m_FROM_NAMES
         int begin = ns42::matchseq0(str, mem_name_chars_nom);
         
-        assert(begin >= 0);
+//        qt_assert(begin >= 0);
         if (begin > 0)
         {
             if (str[begin-1] == 'm')
@@ -150,9 +151,10 @@ std::array<ns42::string_view, N> wrap_to_array(const char* str)
         int begin = ns42::matchseq0(str, mem_name_chars_all);
 #endif //CUT_m_FROM_NAMES
         str += begin;
-        int end = ns42::match0(str, ',');
+        int end = ns42::rmatchseq0(str, mem_name_symbols);
         if (end > 0) {
             arr[i] = ns42::string_view(str, str + end);
+            end = ns42::match0(str, ',');
             str += end + 1;
         } else {
             arr[i] = ns42::string_view(str);
