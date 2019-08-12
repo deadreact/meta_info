@@ -120,9 +120,8 @@ inline std::ostream& operator<<(std::ostream& os, const ns42::string_view& str_v
 namespace metafunction {
 namespace detail {
 /** ------------------------------------------------------------------------------------------- */
-CONSTEXPR static const char* mem_name_chars_all = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-CONSTEXPR static const char* mem_name_chars_nom = "_abcdefghijklnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-CONSTEXPR static const char* mem_name_symbols   = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+CONSTEXPR static const char* mem_name_chars   = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+CONSTEXPR static const char* mem_name_symbols = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 std::vector<std::string> wrap_members(const char* str);
 
 template <size_t N>
@@ -133,19 +132,11 @@ std::array<ns42::string_view, N> wrap_to_array(const char* str)
     for (size_t i = 0; i < N; i++)
     {
 #if defined(CUT_m_FROM_NAMES) && CUT_m_FROM_NAMES
-        int begin = ns42::matchseq0(str, mem_name_chars_nom);
+        int begin = ns42::matchseq0(str, mem_name_chars);
         
 //        qt_assert(begin >= 0);
-        if (begin > 0)
-        {
-            if (str[begin-1] == 'm')
-            {
-                if (str[begin] == '_') {
-                    begin++;
-                } else {
-                    begin--;
-                }
-            }
+        if (str[begin] == 'm' && str[begin + 1] == '_') {
+            begin += 2;
         }
 #else
         int begin = ns42::matchseq0(str, mem_name_chars_all);
@@ -156,6 +147,8 @@ std::array<ns42::string_view, N> wrap_to_array(const char* str)
             arr[i] = ns42::string_view(str, str + end);
             end = ns42::match0(str, ',');
             str += end + 1;
+        } else if (end == 0) {
+            arr[i] = ns42::string_view("");
         } else {
             arr[i] = ns42::string_view(str);
         }

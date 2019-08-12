@@ -82,7 +82,7 @@ struct addon_t {
 };
 
 struct tournament_stat_t {
-    int64_t m_id{};
+    int64_t m_{};
     int8_t m_seats_count{};
     int32_t m_max_players_count{};
     std::vector<tourn_reg_user_info> m_registered_users{};
@@ -118,7 +118,7 @@ struct tournament_stat_t {
     std::vector<int64_t> m_tickets{};
     // operators
     DECL_METAINFO(tournament_stat_t
-                 , m_id
+                 , m_
                  , m_seats_count
                  , m_max_players_count
                  , m_registered_users
