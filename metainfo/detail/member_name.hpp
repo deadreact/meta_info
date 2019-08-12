@@ -131,15 +131,11 @@ std::array<ns42::string_view, N> wrap_to_array(const char* str)
 
     for (size_t i = 0; i < N; i++)
     {
-#if defined(CUT_m_FROM_NAMES) && CUT_m_FROM_NAMES
         int begin = ns42::matchseq0(str, mem_name_chars);
-        
-//        qt_assert(begin >= 0);
+#if defined(CUT_m_FROM_NAMES) && CUT_m_FROM_NAMES
         if (str[begin] == 'm' && str[begin + 1] == '_') {
             begin += 2;
         }
-#else
-        int begin = ns42::matchseq0(str, mem_name_chars_all);
 #endif //CUT_m_FROM_NAMES
         str += begin;
         int end = ns42::rmatchseq0(str, mem_name_symbols);
