@@ -147,7 +147,7 @@ struct from_json_helper<char> {
 template <typename T, metafunction::e_type_group = metafunction::type_group_detect<T>::type_group>
 struct json_converter;
 
-template <typename T, int N = subelements_count_obj<T>::value - 1>
+template <typename T, int N = T::member_count - 1>
 struct json_converter_helper {
     static void members_to_json_string(std::map<std::string, std::string>& dict, const T& obj) {
         dict.insert(std::pair<std::string, std::string>(T::member_name(N), json_converter<typename T::template member_type<N>>::to_json_string(std::get<N>(obj))));
@@ -394,14 +394,14 @@ template <typename T>
 struct json_converter<T, metafunction::e_type_group::structure> {
     static std::string to_json_string(const T& obj)
     {
-        if (subelements_count_obj<T>::get_value(&obj) == 0) {
+        if (obj.member_count == 0) {
             return "{}";
         }
         std::map<std::string, std::string> dict;
         json_converter_helper<T>::members_to_json_string(dict, obj);
 		std::ostringstream ss;
         ss << "{\"" << obj.member_name(0) << "\": " << dict.at(obj.member_name(0));
-        for (size_t i = 1; i < subelements_count_obj<T>::get_value(&obj); i++) {
+        for (size_t i = 1; i < obj.member_count; i++) {
             ss << ",\"" << obj.member_name(i) << "\": " << dict.at(obj.member_name(i));
         }
         ss << "}";
